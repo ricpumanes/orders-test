@@ -17,8 +17,24 @@ router.get("/summary", async (req, res) => {
 
 router.get("/orders", async (req, res) => {
   try {
+    const { page, limit, searchTerm } = req.query;
+
+    const offset = Number(page) * Number(limit);
+    const lim = limit ? Number(limit) : 10;
+
+    let whereClause = "";
+    let params = [];
+
+    if (searchTerm) {
+      whereClause += "WHERE product LIKE ?";
+      params.push(`%${searchTerm}%`);
+    }
+
     const db = await getDb();
-    const orders = await db.all("SELECT * FROM orders");
+    const orders = await db.all(
+      `SELECT * FROM orders ${whereClause} LIMIT ? OFFSET ?`,
+      [...params, lim, offset]
+    );
     res.json(orders);
   } catch (error) {
     console.error("Error fetching orders:", error);

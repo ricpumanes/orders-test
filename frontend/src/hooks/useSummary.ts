@@ -12,9 +12,10 @@ export function useSummary() {
 }
 
 const PAGE_SIZE = 10;
+const DEFAULT_PAGE = 0;
 
 export function useOrders() {
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(DEFAULT_PAGE);
   const [searchTerm, setSearchTerm] = useState("");
 
   const { data, error, isLoading } = useQuery({
@@ -27,8 +28,8 @@ export function useOrders() {
   };
 
   const handleSearchChange = (newSearchTerm: string) => {
-    setPage(0);
     setSearchTerm(newSearchTerm);
+    setPage(DEFAULT_PAGE);
   };
 
   return { data, error, isLoading, page, handlePageChange, handleSearchChange };

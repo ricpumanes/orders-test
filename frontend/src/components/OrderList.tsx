@@ -7,6 +7,7 @@ import type { Order } from "../types";
 export default function OrderList() {
   const {
     data: orders = [],
+    page,
     handlePageChange,
     handleSearchChange,
   } = useOrders();
@@ -54,6 +55,7 @@ export default function OrderList() {
         nextLinkClassName="px-3 py-1 rounded-lg bg-white text-gray-700 hover:bg-blue-100 hover:text-blue-600 shadow-sm transition-colors cursor-pointer"
         breakClassName="group"
         breakLinkClassName="px-3 py-1 rounded-lg bg-gray-200 text-gray-600"
+        forcePage={page}
       />
     </div>
   );
