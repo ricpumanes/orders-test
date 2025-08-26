@@ -3,9 +3,11 @@ import ReactPaginate from "react-paginate";
 import SearchBox from "./SearchBox";
 import { useOrders } from "../hooks/useSummary";
 import type { Order } from "../types";
+import OrderForm from "./OrderForm";
 
 export default function OrderList() {
   const {
+    queryKeyDeps,
     data: orders = [],
     page,
     handlePageChange,
@@ -15,7 +17,10 @@ export default function OrderList() {
   return (
     <div className="p-4">
       <h3 className="font-bold">Recent Orders</h3>
-      <SearchBox onSearch={handleSearchChange} />
+      <div className="flex justify-between items-center">
+        <SearchBox onSearch={handleSearchChange} />
+        <OrderForm queryKeyDeps={queryKeyDeps} />
+      </div>
       <table className="w-full border-collapse border border-gray-500">
         <thead>
           <tr>

@@ -1,7 +1,7 @@
 import axiosClient from "../axiosClient";
 import type { Order } from "../types";
 
-export const apiCreateOrder = async (orderData: Order) => {
+export const apiCreateOrder = async (orderData: Omit<Order, "id">) => {
   const response = await axiosClient.post("/orders", orderData);
   return response.data;
 };

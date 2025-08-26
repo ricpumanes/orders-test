@@ -1,6 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { apiFetchOrders, apiGetSummary } from "../api/orders";
+import { apiCreateOrder, apiFetchOrders, apiGetSummary } from "../api/orders";
 
 export function useSummary() {
   const { data, error, isLoading } = useQuery({
@@ -18,8 +18,10 @@ export function useOrders() {
   const [page, setPage] = useState(DEFAULT_PAGE);
   const [searchTerm, setSearchTerm] = useState("");
 
+  const queryKeyDeps = ["orders", page, PAGE_SIZE, searchTerm];
+
   const { data, error, isLoading } = useQuery({
-    queryKey: ["orders", page, PAGE_SIZE, searchTerm],
+    queryKey: queryKeyDeps,
     queryFn: () => apiFetchOrders(page, PAGE_SIZE, searchTerm),
   });
 
@@ -32,5 +34,21 @@ export function useOrders() {
     setPage(DEFAULT_PAGE);
   };
 
-  return { data, error, isLoading, page, handlePageChange, handleSearchChange };
+  return {
+    queryKeyDeps,
+    data,
+    error,
+    isLoading,
+    page,
+    handlePageChange,
+    handleSearchChange,
+  };
+}
+
+export function useCreateOrder() {
+  const mutation = useMutation({
+    mutationFn: apiCreateOrder,
+  });
+
+  return mutation;
 }
